@@ -1,0 +1,31 @@
+# Compiled binaries
+bin/
+obj/
+
+# User-specific files
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# Build logs
+msbuild.log
+
+# NuGet packages
+*.nupkg
+packages/
+
+# Visual Studio Code settings
+.vscode/
+
+# Rider settings
+.idea/
+*.iml
+
+# Dotnet tools and settings
+.dotnet/
+.dotnet_tool_manifest.json
+
+# Logs and cache
+*.log
+*.cache

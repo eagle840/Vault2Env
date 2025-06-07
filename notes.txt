@@ -1,0 +1,68 @@
+April 29th
+
+To run the application on a typical Windows computer that doesn't have the .NET runtime or the `dotnet` CLI installed, you'll need to publish your project as a self-contained executable. This means the compiled output will include the .NET runtime and all necessary dependencies, allowing it to run independently on the target machine.
+
+Below are the steps to achieve this:
+
+---
+
+### **Step 1: Modify the Project (Optional)**
+
+If you want a single-file executable (i.e., one .exe) rather than a folder with many files, you can update your project file (`.csproj`) to include these properties. Open your `KeyVaultDemo.csproj` file and include the following within a `<PropertyGroup>`:
+
+```xml
+<PropertyGroup>
+  <PublishSingleFile>true</PublishSingleFile>
+  <SelfContained>true</SelfContained>
+  <RuntimeIdentifier>win-x64</RuntimeIdentifier>
+  <!-- Optionally, trim unused assemblies to decrease file size -->
+  <PublishTrimmed>true</PublishTrimmed>
+</PropertyGroup>
+```
+
+Alternatively, you can provide these properties as command-line parameters when you publish.
+
+---
+
+### **Step 2: Publish as a Self-Contained Application**
+
+From your project directory, run the following command in your terminal or command prompt:
+
+```bash
+dotnet publish -c Release -r win-x64 --self-contained true /p:PublishSingleFile=true
+```
+
+Let’s break down the command:
+
+- **`-c Release`**: Publishes the application in the Release configuration.
+- **`-r win-x64`**: Targets 64-bit Windows. If you need a 32-bit version, use `win-x86`.
+- **`--self-contained true`**: Bundles the .NET runtime with your application.
+- **`/p:PublishSingleFile=true`**: Packages everything into a single executable file.
+- **`/p:PublishTrimmed=true`** *(optional)*: Trims unused code, which can reduce the file size but should be used carefully.
+
+After running the command, you’ll find your executable in the `bin/Release/net9.0/win-x64/publish` directory.
+
+---
+
+### **Step 3: Deploy the Application**
+
+Now that you have your self-contained executable, you can copy the published folder (or just the single `.exe` file, if you've used the single-file publish option) to any typical Windows computer. The program will run without requiring any pre-installed version of the .NET runtime.
+
+---
+
+### **Additional Considerations**
+
+- **File Size:**  
+  Self-contained and single-file options tend to produce larger executables since they include the runtime. If file size is a concern, you can consider not using the single-file option or explore compression options.
+
+- **Testing:**  
+  Always test the published executable on an environment that does not have the .NET runtime installed to ensure that all dependencies were correctly bundled.
+
+- **Updating Your Application:**  
+  For each new version of your application, you'll need to re-publish it with these settings, and then redistribute the executable to your users.
+
+---
+
+This self-contained deployment approach is especially useful when you want to distribute your application to environments where you cannot rely on the .NET runtime being present, giving your users a seamless experience without additional installations.
+
+Would you like to dive deeper into any advanced deployment strategies or learn how to incorporate additional publish settings into your project?
