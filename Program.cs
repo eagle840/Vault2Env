@@ -4,14 +4,32 @@ using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 using Azure.Identity;
 using Azure.Security.KeyVault.Secrets;
+using Microsoft.Extensions.Configuration;
 
 namespace KeyVaultDemo
 {
     class Program
     {
+        
         static async Task Main(string[] args)
         {
             // If any arguments are provided, assume the user wants to perform an Azure CLI command.
+
+            // Load configuration from appsettings.json
+            var config = new ConfigurationBuilder()
+                .SetBasePath(AppContext.BaseDirectory)
+                .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+                .Build();
+
+            var vaultName = config["KeyVault:VaultName"];
+            if (string.IsNullOrWhiteSpace(vaultName))
+            {
+                Console.WriteLine("Vault name not found in configuration.");
+                return;
+            }
+            var keyVaultUrl = $"https://{vaultName}.vault.azure.net/";
+
+
             if (args.Length > 0)
             {
                 var command = args[0].ToLower();
@@ -34,8 +52,16 @@ namespace KeyVaultDemo
                 return;
             }
 
+                if (args.Length == 0)
+                {
+                    Console.WriteLine("Usage:");
+                    Console.WriteLine("  dotnet run login|logout|list");
+                    Console.WriteLine("  dotnet run <secretName>");
+                    return;
+                }
+
             // If no command-line argument is provided, perform the Key Vault secret retrieval.
-            var keyVaultUrl = "https://<VAULTNAME>.vault.azure.net/";
+            // var keyVaultUrl = "https://<VAULTNAME>.vault.azure.net/"; 
             var secretName = "mysecret1";
 
             // DefaultAzureCredential works by trying multiple credential providers.
