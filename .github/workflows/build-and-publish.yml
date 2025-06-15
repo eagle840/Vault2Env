@@ -1,0 +1,64 @@
+# .github/workflows/build-and-publish.yml
+
+name: Build and Publish KeyVaultApp
+
+on:
+  # Removed 'push' event. This workflow can now only be triggered manually.
+  workflow_dispatch: # Allows manual triggering of the workflow from GitHub UI
+
+jobs:
+  build-windows:
+    runs-on: windows-latest # Use a Windows runner for Windows x64 executable
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4 # Action to check out your repository code
+
+    - name: Setup .NET SDK
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: '8.0.x' # Specify the .NET 8 SDK version
+
+    - name: Restore dependencies
+      run: dotnet restore # Restores NuGet packages for your project
+
+    - name: Build project
+      run: dotnet build --no-restore --configuration Release # Builds the project in Release configuration
+
+    - name: Publish to a single file (Windows x64)
+      run: dotnet publish -c Release -r win-x64 --self-contained true -p:PublishSingleFile=true -p:IncludeNativeLibrariesForSelfExtract=true -p:PublishTrimmed=true -o publish_output
+      # -c Release: Build in Release configuration for optimized output.
+      # -r win-x64: Target Windows 64-bit runtime. Change this for other OS (e.g., linux-x64, osx-x64).
+      # --self-contained true: Includes the .NET runtime with your app, making it runnable without .NET pre-installed.
+      # -p:PublishSingleFile=true: Bundles most files into a single executable.
+      # -p:IncludeNativeLibrariesForSelfExtract=true: Ensures native libraries are also bundled inside the single file.
+      # -p:PublishTrimmed=true: Reduces the overall size of the published application by trimming unused code.
+      # -o publish_output: Specifies the output directory for the published files.
+
+    - name: Upload artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: KeyVaultApp-windows-x64
+        path: publish_output/ # Uploads the entire publish_output directory as an artifact
+
+  # You can add more jobs for other operating systems if needed, e.g.:
+  # build-linux:
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - name: Checkout code
+  #       uses: actions/checkout@v4
+  #     - name: Setup .NET SDK
+  #       uses: actions/setup-dotnet@v4
+  #       with:
+  #         dotnet-version: '8.0.x'
+  #     - name: Restore dependencies
+  #       run: dotnet restore
+  #     - name: Build project
+  #       run: dotnet build --no-restore --configuration Release
+  #     - name: Publish to a single file (Linux x64)
+  #       run: dotnet publish -c Release -r linux-x64 --self-contained true -p:PublishSingleFile=true -p:IncludeNativeLibrariesForSelfExtract=true -p:PublishTrimmed=true -o publish_output
+  #     - name: Upload artifact
+  #       uses: actions/upload-artifact@v4
+  #       with:
+  #         name: KeyVaultApp-linux-x64
+  #         path: publish_output/

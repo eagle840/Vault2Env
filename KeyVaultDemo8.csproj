@@ -4,6 +4,7 @@
     <OutputType>Exe</OutputType>
     <TargetFramework>net8.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
+    <AssemblyName>v2e</AssemblyName>
     <Nullable>enable</Nullable>
   </PropertyGroup>
 

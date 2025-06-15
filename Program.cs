@@ -10,11 +10,8 @@ namespace KeyVaultDemo
 {
     class Program
     {
-        
         static async Task Main(string[] args)
         {
-            // If any arguments are provided, assume the user wants to perform an Azure CLI command.
-
             // Load configuration from appsettings.json
             var config = new ConfigurationBuilder()
                 .SetBasePath(AppContext.BaseDirectory)
@@ -29,40 +26,44 @@ namespace KeyVaultDemo
             }
             var keyVaultUrl = $"https://{vaultName}.vault.azure.net/";
 
-
-            if (args.Length > 0)
+            // Handle command-line arguments
+            if (args.Length == 0)
             {
-                var command = args[0].ToLower();
-                if (command == "login")
-                {
-                    ExecuteAzCommand("az login");
-                }
-                else if (command == "logout")
-                {
-                    ExecuteAzCommand("az logout");
-                }
-                else if (command == "list")
-                {
-                    ExecuteAzCommand("az account list --output table");
-                }
-                else
-                {
-                    Console.WriteLine("Invalid argument. Use 'login', 'logout', or 'list'.");
-                }
+                Console.WriteLine("Usage:");
+                Console.WriteLine("  dotnet run login|logout|list");
+                Console.WriteLine("  dotnet run <secretName>");
+                return; // Exit if no arguments are provided.
+            }
+
+            // At this point, args.Length is greater than 0.
+            var firstArg = args[0].ToLower();
+
+            // Check if the argument is an Azure CLI command
+            if (firstArg == "login")
+            {
+                ExecuteAzCommand("az login");
+                return;
+            }
+            else if (firstArg == "logout")
+            {
+                ExecuteAzCommand("az logout");
+                return;
+            }
+            else if (firstArg == "list")
+            {
+                ExecuteAzCommand("az account list --output table");
                 return;
             }
 
-                if (args.Length == 0)
-                {
-                    Console.WriteLine("Usage:");
-                    Console.WriteLine("  dotnet run login|logout|list");
-                    Console.WriteLine("  dotnet run <secretName>");
-                    return;
-                }
+            // If the argument is not an Azure CLI command, assume it's a secret name.
+            // If more than one argument is provided, issue a warning but proceed with the first one.
+            if (args.Length > 1)
+            {
+                Console.WriteLine("Warning: Only the first argument is used as a secret name. Additional arguments will be ignored.");
+            }
 
-            // If no command-line argument is provided, perform the Key Vault secret retrieval.
-            // var keyVaultUrl = "https://<VAULTNAME>.vault.azure.net/"; 
-            var secretName = "mysecret1";
+            Console.WriteLine($"Attempting to pull secret: {args[0]}");
+            var secretName = args[0]; // Use the provided argument as the secret name
 
             // DefaultAzureCredential works by trying multiple credential providers.
             var credential = new DefaultAzureCredential();
@@ -71,17 +72,21 @@ namespace KeyVaultDemo
             try
             {
                 KeyVaultSecret secret = await client.GetSecretAsync(secretName);
-                Console.WriteLine("Secret value retrieved from Key Vault:");
+                Console.WriteLine($"Secret '{secretName}' value retrieved from Key Vault:");
                 Console.WriteLine(secret.Value);
 
                 // Store the secret in an environment variable for the current process.
                 Environment.SetEnvironmentVariable(secretName, secret.Value);
-                Console.WriteLine($"Secret has been set as environment variable: {secretName}");
+                Console.WriteLine($"Secret '{secretName}' has been set as environment variable.");
             }
             catch (Exception ex)
             {
-                Console.WriteLine("An error occurred while retrieving the secret:");
+                Console.WriteLine($"An error occurred while retrieving the secret '{secretName}':");
                 Console.WriteLine(ex.Message);
+                Console.WriteLine("Please ensure:");
+                Console.WriteLine("1. The secret name is correct.");
+                Console.WriteLine("2. You have 'Get Secret' permissions on the Key Vault.");
+                Console.WriteLine("3. You are logged into Azure (e.g., via 'az login').");
             }
         }
 
@@ -112,6 +117,7 @@ namespace KeyVaultDemo
                     CreateNoWindow = true
                 };
 
+                Console.WriteLine($"Executing command: {command}");
                 using (var process = Process.Start(psi))
                 {
                     string output = process.StandardOutput.ReadToEnd();
@@ -128,6 +134,7 @@ namespace KeyVaultDemo
             {
                 Console.WriteLine("Failed to execute command:");
                 Console.WriteLine(ex.Message);
+                Console.WriteLine("Please ensure Azure CLI is installed and accessible in your system's PATH.");
             }
         }
     }
