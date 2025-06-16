@@ -3,7 +3,7 @@
 ## Must have
 
 - add version output `v2e version`
-- add option for device login `v2e login-with-devicecode` 
+- add option for device login `v2e login-with-devicecode`
 - check user is logged in before pulled secret.
 - should be a user .appsettings
 - should be a pwd appsettings that overrdies default user
@@ -15,6 +15,7 @@
 ## Nice to have
 
 - allow for AWS and GCP
+- in the app settings, set the default AZ account/subscription to use. Same for running v2e for a sepecific dir.
 
 ## Thoughts
 
