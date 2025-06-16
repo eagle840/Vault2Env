@@ -37,6 +37,8 @@ jobs:
       # -p:IncludeNativeLibrariesForSelfExtract=true: Ensures native libraries are also bundled inside the single file.
       # -p:PublishTrimmed=true: Reduces the overall size of the published application by trimming unused code.
       # -o publish_output: Specifies the output directory for the published files.
+      # this creates a file v2e.exe and v2e.pdb to the publish_output directory
+
 
     - name: Upload artifact
       uses: actions/upload-artifact@v4
