@@ -1,6 +1,7 @@
 # Compiled binaries
 bin/
 obj/
+publish_output/
 
 # User-specific files
 *.suo

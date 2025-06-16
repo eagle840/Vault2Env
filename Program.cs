@@ -13,8 +13,9 @@ namespace KeyVaultDemo
         static async Task Main(string[] args)
         {
             // Load configuration from appsettings.json
+            var homeDirectory = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
             var config = new ConfigurationBuilder()
-                .SetBasePath(AppContext.BaseDirectory)
+                .SetBasePath(homeDirectory)
                 .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
                 .Build();
 
