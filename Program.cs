@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Reflection;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
 using System.Threading.Tasks;
@@ -53,6 +54,11 @@ namespace KeyVaultDemo
             else if (firstArg == "list")
             {
                 ExecuteAzCommand("az account list --output table");
+                return;
+            }
+            else if (firstArg == "version" || firstArg == "--version" || firstArg == "-v")
+            {
+                PrintVersionInfo();
                 return;
             }
 
@@ -137,6 +143,14 @@ namespace KeyVaultDemo
                 Console.WriteLine(ex.Message);
                 Console.WriteLine("Please ensure Azure CLI is installed and accessible in your system's PATH.");
             }
+        }
+
+        static void PrintVersionInfo()
+        {
+            // Fetch version from assembly
+            var assembly = Assembly.GetExecutingAssembly();
+            var version = assembly.GetName().Version?.ToString() ?? "unknown";
+            Console.WriteLine($"KeyVaultDemo Version: {version}");
         }
     }
 }

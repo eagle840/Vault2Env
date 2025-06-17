@@ -6,6 +6,7 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <AssemblyName>v2e</AssemblyName>
     <Nullable>enable</Nullable>
+    <Version>0.0.2</Version>
   </PropertyGroup>
 
   <ItemGroup>
