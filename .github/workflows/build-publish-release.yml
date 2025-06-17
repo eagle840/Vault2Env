@@ -5,9 +5,9 @@ name: Build, Publish & release KeyVaultApp
 on:
   # Removed 'push' event. This workflow can now only be triggered manually.
   workflow_dispatch: # Allows manual triggering of the workflow from GitHub UI
- # push:
- #   tags:
- #     - '*'
+  push:
+    tags:
+      - '*'
 
 jobs:
   build-windows:
