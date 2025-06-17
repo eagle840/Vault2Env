@@ -1,6 +1,6 @@
 # .github/workflows/build-and-publish.yml
 
-name: Build and Publish KeyVaultApp
+name: Build, Publish & release KeyVaultApp
 
 on:
   # Removed 'push' event. This workflow can now only be triggered manually.
