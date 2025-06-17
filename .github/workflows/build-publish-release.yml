@@ -97,8 +97,8 @@ jobs:
       uses: actions/download-artifact@v2
       # https://github.com/actions/download-artifact
       with:
-        name: my-program
-        path: my-program
+        name: v2e
+        path: publish_output/
 
     - name: Upload Release Asset
       id: upload-release-asset
@@ -107,6 +107,6 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         upload_url: ${{ steps.create_release.outputs.upload_url }}
-        asset_path: ./my-program/my-program.exe
-        asset_name: my-program.exe
+        asset_path: ./publish_output/v2e.exe
+        asset_name: v2e.exe
         asset_content_type: application/octet-stream
