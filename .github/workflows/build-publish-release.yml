@@ -94,7 +94,7 @@ jobs:
           Description of the release
 
     - name: Get Artifact
-      uses: actions/download-artifact@v2
+      uses: actions/download-artifact@v4
       # https://github.com/actions/download-artifact
       with:
         name: v2e
