@@ -48,6 +48,10 @@ jobs:
 
   build-linux:
     runs-on: ubuntu-latest # Use a Linux runner for Linux x64 executable
+    permissions: # Add this block
+      contents: write # Grant write permission to the GITHUB_TOKEN for contents
+
+    steps:
 
     steps:
     - name: Checkout code
