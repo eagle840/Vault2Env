@@ -52,8 +52,6 @@ jobs:
       contents: write # Grant write permission to the GITHUB_TOKEN for contents
 
     steps:
-
-    steps:
     - name: Checkout code
       uses: actions/checkout@v4 # Action to check out your repository code
 
