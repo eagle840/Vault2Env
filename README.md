@@ -1,6 +1,8 @@
 # KeyVaultDemo
 
-KeyVaultDemo is a .NET 8 C\# console application designed to securely retrieve secrets from Azure Key Vault and manage Azure CLI authentication. It offers a convenient way to interact with your Azure Key Vault, fetch specific secrets, and execute common Azure CLI commands directly from the application.
+! This is a work in progress, it may not function as described.
+
+KeyVaultDemo is a .NET 8 C\# console application designed to securely retrieve secrets from Azure Key Vault (AWS and GCP to come) and manage Azure CLI authentication. It offers a convenient way to interact with your Azure Key Vault, fetch specific secrets, and execute common Azure CLI commands directly from the application.
 
 -----
 
@@ -10,7 +12,7 @@ KeyVaultDemo is a .NET 8 C\# console application designed to securely retrieve s
   * **Environment Variable Integration**: Automatically sets retrieved secrets as environment variables for the current process, making them accessible to other parts of your application or subsequent commands.
   * **Azure CLI Integration**: Provides shortcuts to perform `az login`, `az logout`, and `az account list` commands.
   * **Version Information**: Displays the application's version.
-  * **Configuration Management**: Loads Key Vault name from `appsettings.json`.
+  * **Configuration Management**: Loads Key Vault name from `appsettings.json`, by default from your home directory, or pwd if one is available there.
 
 -----
 
@@ -40,7 +42,7 @@ Before running this application, make sure you have the following installed:
     ```json
     {
       "KeyVault": {
-        "VaultName": "YourKeyVaultName" 
+        "VaultName": "YourKeyVaultName"
       }
     }
     ```
