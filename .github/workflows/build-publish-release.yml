@@ -95,12 +95,12 @@ jobs:
         body: |
           Description of the release
 
-    - name: Get Artifact
-      uses: actions/download-artifact@v4
-      # https://github.com/actions/download-artifact
-      with:
-        name: v2e
-        path: publish_output/
+#    - name: Get Artifact
+#     uses: actions/download-artifact@v4
+#    # https://github.com/actions/download-artifact
+#   with:
+#    name: v2e
+#   path: publish_output/
 
     - name: Upload Release Asset
       id: upload-release-asset
