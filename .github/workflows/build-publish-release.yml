@@ -99,8 +99,8 @@ jobs:
       uses: actions/download-artifact@v4
       # https://github.com/actions/download-artifact
       with:
-      name: v2e
-      path: publish_output/
+        name: KeyVaultApp-linux-x64
+        path: publish_output/
 
     - name: Upload Release Asset
       id: upload-release-asset
