@@ -109,6 +109,6 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         upload_url: ${{ steps.create_release.outputs.upload_url }}
-        asset_path: ./publish_output/v2e.exe
-        asset_name: v2e.exe
+        asset_path: ./publish_output/v2e
+        asset_name: KeyVaultApp-linux-x64
         asset_content_type: application/octet-stream
