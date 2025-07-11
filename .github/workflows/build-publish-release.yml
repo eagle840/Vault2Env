@@ -48,6 +48,7 @@ jobs:
 
   build-linux:
     runs-on: ubuntu-latest # Use a Linux runner for Linux x64 executable
+    needs: [build-windows] # This makes build-linux wait for build-windows to complete
     permissions: # Add this block
       contents: write # Grant write permission to the GITHUB_TOKEN for contents
 
@@ -111,4 +112,22 @@ jobs:
         upload_url: ${{ steps.create_release.outputs.upload_url }}
         asset_path: ./publish_output/v2e
         asset_name: KeyVaultApp-linux-x64
+        asset_content_type: application/octet-stream
+
+    - name: Download Windows Artifact
+      uses: actions/download-artifact@v4
+      with:
+        name: KeyVaultApp-windows-x64 # Name of the artifact uploaded by build-windows
+        path: ./windows_artifacts # Directory to download the Windows build into
+
+    - name: Upload Windows Release Asset (if downloaded)
+      if: success() && steps.download-windows-artifact.outcome == 'success' # Only if download was successful
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }}
+        # Assuming the Windows executable name is KeyVaultApp.exe
+        asset_path: ./windows_build_output/v2e.exe
+        asset_name: KeyVaultApp-windows-x64.exe
         asset_content_type: application/octet-stream
