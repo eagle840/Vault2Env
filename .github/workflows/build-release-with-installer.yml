@@ -37,7 +37,7 @@ jobs:
         path: publish_output/v2e.exe
 
     - name: Compile Inno Setup installer
-      uses: Minionguyjpro/Inno-Setup-Action@v1.0.2
+      uses: Minionguyjpro/Inno-Setup-Action@1.0.2
       with:
         script: setup.iss
       # This will use setup.iss and create the installer in the 'installer_output' directory
