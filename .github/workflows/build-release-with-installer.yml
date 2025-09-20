@@ -36,14 +36,10 @@ jobs:
         name: v2e-windows-x64
         path: publish_output/v2e.exe
 
-    # --- New Steps for Installer --- 
-    - name: Install Inno Setup
-      uses: crazy-max/ghaction-inno-setup@v3.1.0
+    - name: Compile Inno Setup installer
+      uses: Minionguyjpro/Inno-Setup-Action@v1.0.2
       with:
-        version: "6.2.2"
-
-    - name: Compile Installer
-      run: iscc.exe "setup.iss"
+        script: setup.iss
       # This will use setup.iss and create the installer in the 'installer_output' directory
 
     - name: Upload Installer Artifact
