@@ -40,6 +40,7 @@ jobs:
       uses: Minionguyjpro/Inno-Setup-Action@v1.2.7
       with:
         script: setup.iss
+        args: /DMyBuildPath="${{ github.workspace }}\publish_output"
       # This will use setup.iss and create the installer in the 'installer_output' directory
 
     - name: Upload Installer Artifact
